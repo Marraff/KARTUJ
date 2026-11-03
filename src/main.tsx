@@ -1,9 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { App } from './app/App'
+import { requestPersistentStorage } from './db/database'
+import './styles/tokens.css'
+import './styles/global.css'
 
-createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')
+if (!rootElement) throw new Error('Missing #root element in index.html')
+
+void requestPersistentStorage()
+
+createRoot(rootElement).render(
   <StrictMode>
     <App />
   </StrictMode>,
