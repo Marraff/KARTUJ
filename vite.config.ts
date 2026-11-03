@@ -47,7 +47,8 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         // SPA: every route offline falls back to index.html.
         navigateFallback: '/index.html',
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
+        // webp = store logos (~95 kB for all) – precached so suggestions work offline.
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,webmanifest}'],
       },
       devOptions: {
         // Lets you test install + service worker on `npm run dev`.

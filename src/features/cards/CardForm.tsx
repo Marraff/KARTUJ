@@ -7,6 +7,7 @@ import { BarcodeView } from '../barcode/BarcodeView'
 import { guessFormat, isValidCode } from '../barcode/barcodeFormats'
 import { LazyScanner } from '../scanner/LazyScanner'
 import { useScannerOverlay } from '../scanner/useScannerOverlay'
+import { StoreNameField } from '../stores/StoreNameField'
 import { DEFAULT_CARD_COLOR } from './cardColors'
 import { ColorPicker } from './ColorPicker'
 import type { BarcodeFormat, CardInput } from './types'
@@ -71,13 +72,13 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      <TextField
-        label={texts.cardForm.name}
+      <StoreNameField
         value={values.name}
-        onChange={(name) => update({ name })}
-        placeholder={texts.cardForm.namePlaceholder}
+        storeId={values.storeId}
         error={visibleErrors.name}
-        required
+        // Typing replaces a picked store; the logo may still be recognized from the name.
+        onChange={(name) => update({ name, storeId: undefined })}
+        onPickStore={(store) => update({ name: store.name, color: store.color, storeId: store.id })}
       />
 
       <Button variant="secondary" onClick={scanner.open}>

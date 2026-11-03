@@ -8,11 +8,15 @@ type ColorPickerProps = {
 }
 
 export function ColorPicker({ value, onChange }: ColorPickerProps) {
+  // A store's brand color (picked from the catalog) is usually not in the palette:
+  // show it as the first swatch so the user sees what is selected.
+  const colors = CARD_COLORS.includes(value) ? CARD_COLORS : [value, ...CARD_COLORS]
+
   return (
     <fieldset className={styles.fieldset}>
       <legend className={styles.legend}>{texts.cardForm.color}</legend>
       <div className={styles.colors}>
-        {CARD_COLORS.map((color, index) => (
+        {colors.map((color, index) => (
           // Swatch color is data, so it is set inline.
           <label key={color} className={styles.option} style={{ background: color }}>
             <input

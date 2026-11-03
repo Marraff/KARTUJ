@@ -1,3 +1,9 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
 .barcodeButton {
   display: block;
   width: 100%;

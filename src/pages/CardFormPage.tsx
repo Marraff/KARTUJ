@@ -110,6 +110,7 @@ function toCardInput(card: Card): CardInput {
     code: card.code,
     format: card.format,
     color: card.color,
+    storeId: card.storeId,
     favorite: card.favorite,
   }
 }

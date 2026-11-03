@@ -33,6 +33,7 @@ export const texts = {
     editTitle: 'Upraviť kartu',
     name: 'Názov obchodu',
     namePlaceholder: 'napr. Lidl Plus',
+    storeSuggestions: 'Známe obchody',
     code: 'Číslo karty',
     codePlaceholder: 'číslo pod čiarovým kódom',
     color: 'Farba karty',

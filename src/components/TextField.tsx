@@ -12,6 +12,8 @@ type TextFieldProps = {
   /** Numeric keyboard on phones for card numbers. */
   inputMode?: 'text' | 'numeric'
   autoFocus?: boolean
+  onFocus?: () => void
+  onBlur?: () => void
 }
 
 export function TextField({
@@ -24,6 +26,8 @@ export function TextField({
   multiline = false,
   inputMode = 'text',
   autoFocus = false,
+  onFocus,
+  onBlur,
 }: TextFieldProps) {
   const id = useId()
   const errorId = `${id}-error`
@@ -33,6 +37,8 @@ export function TextField({
     placeholder,
     required,
     autoFocus,
+    onFocus,
+    onBlur,
     className: `${styles.input} ${error ? styles.invalid : ''}`,
     'aria-invalid': error ? true : undefined,
     'aria-describedby': error ? errorId : undefined,

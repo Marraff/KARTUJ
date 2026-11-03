@@ -8,6 +8,8 @@ import { FullscreenBarcode } from '../features/barcode/FullscreenBarcode'
 import { markCardUsed } from '../features/cards/cardsRepo'
 import type { Card } from '../features/cards/types'
 import { useCard } from '../features/cards/useCards'
+import { getCardStore } from '../features/stores/storeCatalog'
+import { StoreLogo } from '../features/stores/StoreLogo'
 import { useWakeLock } from '../lib/useWakeLock'
 import { texts } from '../texts/sk'
 import styles from './CardDetailPage.module.css'
@@ -47,8 +49,15 @@ function CardDetail({ card }: CardDetailProps) {
     </IconButton>
   )
 
+  const store = getCardStore(card)
+
   return (
     <Page title={card.name} showBack headerActions={editButton}>
+      {store && (
+        <div className={styles.logo}>
+          <StoreLogo store={store} name={card.name} color={card.color} size="lg" />
+        </div>
+      )}
       <button
         type="button"
         className={styles.barcodeButton}

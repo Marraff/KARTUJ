@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.suggestions {
+  margin: 0;
+  padding: var(--space-1);
+  list-style: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.suggestion:active,
+.suggestion:focus-visible {
+  background: var(--color-bg);
+}

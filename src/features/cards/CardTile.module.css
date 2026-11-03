@@ -1,7 +1,9 @@
 .tile {
   position: relative;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
   /* Same proportions as a real payment card. */
   aspect-ratio: 1.586;
   padding: var(--space-3);

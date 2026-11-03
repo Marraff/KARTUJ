@@ -28,7 +28,6 @@ export function InstallGuide() {
               <li key={step}>{step}</li>
             ))}
           </ol>
-          <p className={styles.warning}>{texts.install.iosWarning}</p>
         </section>
       )}
 
