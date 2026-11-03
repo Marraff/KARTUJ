@@ -1,0 +1,35 @@
+# Claude Code – lokálne nastavenia
+.claude/settings.local.json
+    
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native builds
+/ios
+/android
+
+# Env files
+.env*.local
+.env
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# TEXT Files
+*.txt
