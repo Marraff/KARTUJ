@@ -110,7 +110,6 @@ function toCardInput(card: Card): CardInput {
     code: card.code,
     format: card.format,
     color: card.color,
-    note: card.note,
     favorite: card.favorite,
   }
 }

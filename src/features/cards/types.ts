@@ -13,7 +13,7 @@ export type Card = {
   code: string
   format: BarcodeFormat
   color: string
-  note?: string
+  // (Older cards may still contain an unused `note` field – kept in the DB on purpose, never shown.)
   favorite: boolean
   usageCount: number
   createdAt: number
@@ -22,4 +22,4 @@ export type Card = {
 }
 
 /** Fields the user fills in the form; the rest is managed by cardsRepo. */
-export type CardInput = Pick<Card, 'name' | 'code' | 'format' | 'color' | 'note' | 'favorite'>
+export type CardInput = Pick<Card, 'name' | 'code' | 'format' | 'color' | 'favorite'>

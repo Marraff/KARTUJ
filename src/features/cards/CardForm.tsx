@@ -4,10 +4,10 @@ import { CameraIcon } from '../../components/icons'
 import { TextField } from '../../components/TextField'
 import { texts } from '../../texts/sk'
 import { BarcodeView } from '../barcode/BarcodeView'
-import { BARCODE_FORMATS, guessFormat, isValidCode } from '../barcode/barcodeFormats'
-import { DEFAULT_CARD_COLOR } from './cardColors'
+import { guessFormat, isValidCode } from '../barcode/barcodeFormats'
 import { LazyScanner } from '../scanner/LazyScanner'
 import { useScannerOverlay } from '../scanner/useScannerOverlay'
+import { DEFAULT_CARD_COLOR } from './cardColors'
 import { ColorPicker } from './ColorPicker'
 import type { BarcodeFormat, CardInput } from './types'
 import styles from './CardForm.module.css'
@@ -32,14 +32,13 @@ const EMPTY_CARD: CardInput = {
   code: '',
   format: 'CODE_128',
   color: DEFAULT_CARD_COLOR,
-  note: '',
   favorite: false,
 }
 
+// The barcode type is never shown to the user (it only confuses people):
+// a scanned code keeps the exact type from the scanner, a typed number gets a guessed type.
 export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDelete }: CardFormProps) {
   const [values, setValues] = useState<CardInput>(initialValues ?? EMPTY_CARD)
-  // Once the user picks a format by hand, stop guessing it from the typed number.
-  const [isFormatChosen, setIsFormatChosen] = useState(initialValues !== undefined)
   const [showErrors, setShowErrors] = useState(false)
   const scanner = useScannerOverlay()
 
@@ -53,19 +52,10 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
   }
 
   function handleCodeChange(newCode: string) {
-    const changes: Partial<CardInput> = { code: newCode }
-    if (!isFormatChosen) changes.format = guessFormat(newCode.trim())
-    update(changes)
-  }
-
-  function handleFormatChange(format: BarcodeFormat) {
-    setIsFormatChosen(true)
-    update({ format })
+    update({ code: newCode, format: guessFormat(newCode.trim()) })
   }
 
   function handleScanned(scannedCode: string, format: BarcodeFormat) {
-    // The scanner knows the exact format, so stop guessing from the number.
-    setIsFormatChosen(true)
     update({ code: scannedCode, format })
     scanner.close()
   }
@@ -76,12 +66,7 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
       setShowErrors(true)
       return
     }
-    onSubmit({
-      ...values,
-      name: values.name.trim(),
-      code,
-      note: values.note?.trim() || undefined,
-    })
+    onSubmit({ ...values, name: values.name.trim(), code })
   }
 
   return (
@@ -109,33 +94,7 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
         required
       />
 
-      <div className={styles.field}>
-        <label htmlFor="card-format" className={styles.label}>
-          {texts.cardForm.format}
-        </label>
-        <select
-          id="card-format"
-          className={styles.select}
-          value={values.format}
-          onChange={(event) => handleFormatChange(event.target.value as BarcodeFormat)}
-        >
-          {BARCODE_FORMATS.map((format) => (
-            <option key={format} value={format}>
-              {texts.barcodeFormats[format]}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <ColorPicker value={values.color} onChange={(color) => update({ color })} />
-
-      <TextField
-        label={texts.cardForm.note}
-        value={values.note ?? ''}
-        onChange={(note) => update({ note })}
-        placeholder={texts.cardForm.notePlaceholder}
-        multiline
-      />
 
       <label className={styles.checkbox}>
         <input

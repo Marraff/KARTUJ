@@ -60,13 +60,6 @@ function CardDetail({ card }: CardDetailProps) {
       <p className={styles.hint}>{texts.cardDetail.tapToEnlarge}</p>
       <p className={styles.hint}>💡 {texts.cardDetail.brightnessHint}</p>
 
-      {card.note && (
-        <section className={styles.note}>
-          <h2 className={styles.noteTitle}>{texts.cardDetail.note}</h2>
-          <p>{card.note}</p>
-        </section>
-      )}
-
       {isFullscreen && (
         <FullscreenBarcode code={card.code} format={card.format} onClose={() => setIsFullscreen(false)} />
       )}

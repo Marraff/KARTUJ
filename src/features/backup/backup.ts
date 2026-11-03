@@ -98,6 +98,7 @@ function isValidCard(value: unknown): value is Card {
     BARCODE_FORMATS.includes(value.format as BarcodeFormat) &&
     typeof value.color === 'string' &&
     /^#[0-9a-f]{6}$/i.test(value.color) &&
+    // `note` was removed from the app; backups that still contain it stay valid.
     (value.note === undefined || typeof value.note === 'string') &&
     typeof value.favorite === 'boolean' &&
     isNonNegativeNumber(value.usageCount) &&

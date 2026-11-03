@@ -1,7 +1,7 @@
 import JsBarcode from 'jsbarcode'
 import type { BarcodeFormat } from '../cards/types'
 
-/** Order in which formats are offered in the form. */
+/** Formats the app can scan and draw (never shown to the user). */
 export const BARCODE_FORMATS: readonly BarcodeFormat[] = [
   'CODE_128',
   'EAN_13',
@@ -26,10 +26,15 @@ export function toJsBarcodeFormat(format: Exclude<BarcodeFormat, 'QR_CODE'>): st
   return JSBARCODE_FORMAT[format]
 }
 
-/** Guess the most likely format from a manually typed number. */
+/**
+ * Guess the format from a manually typed number (the user never picks it).
+ * Retail formats only when the check digit is valid; otherwise Code 128, which can
+ * encode any number or text. Checkout scanners read all of these – what matters is the number.
+ */
 export function guessFormat(code: string): BarcodeFormat {
   const digitsOnly = /^\d+$/.test(code)
   if (digitsOnly && code.length === 13 && isValidCode(code, 'EAN_13')) return 'EAN_13'
+  if (digitsOnly && code.length === 12 && isValidCode(code, 'UPC_A')) return 'UPC_A'
   if (digitsOnly && code.length === 8 && isValidCode(code, 'EAN_8')) return 'EAN_8'
   return 'CODE_128'
 }
