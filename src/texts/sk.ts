@@ -127,8 +127,8 @@ export const texts = {
     installed: 'Appka je nainštalovaná. ✓',
     iosSteps: [
       'Otvor túto stránku v Safari.',
-      'Ťukni na tlačidlo Zdieľať (štvorec so šípkou hore).',
-      'Vyber „Pridať na plochu“ a potvrď „Pridať“.',
+      'Ťukni na Zdieľať: na iOS 26 je v menu ⋯ (tri bodky vedľa adresy), na starších iOS je to štvorec so šípkou v dolnej lište.',
+      'Vyber „Pridať na plochu“ (posuň panel nižšie), nechaj zapnuté „Otvoriť ako webovú aplikáciu“ a potvrď „Pridať“.',
       'Otváraj KARTUJ už len z ikony na ploche.',
     ],
     iosWarning:
