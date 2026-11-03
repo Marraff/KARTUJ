@@ -1,0 +1,49 @@
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.legend {
+  padding: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.colors {
+  display: grid;
+  grid-template-columns: repeat(5, var(--touch-target));
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.option {
+  position: relative;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Selected color: ring around the swatch. */
+.option:has(.radio:checked) {
+  outline: 3px solid var(--color-text);
+  outline-offset: 3px;
+}
+
+.option:has(.radio:focus-visible) {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Invisible but still focusable and readable by screen readers. */
+.radio {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}

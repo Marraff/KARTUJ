@@ -47,6 +47,25 @@ export function SettingsIcon(props: IconProps) {
   )
 }
 
+export function SearchIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </Icon>
+  )
+}
+
+export function CardsIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="2" y="7" width="17" height="12" rx="2" />
+      <path d="M6 4h14a2 2 0 0 1 2 2v9" />
+      <path d="M6 11v4M9 11v4M12 11v4M15 11v4" />
+    </Icon>
+  )
+}
+
 export function EditIcon(props: IconProps) {
   return (
     <Icon {...props}>

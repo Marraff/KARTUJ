@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { useGoBack } from '../lib/useGoBack'
 import { texts } from '../texts/sk'
 import { IconButton } from './IconButton'
 import { BackIcon } from './icons'
@@ -13,24 +13,14 @@ type HeaderProps = {
 }
 
 export function Header({ title, showBack = false, actions }: HeaderProps) {
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  function goBack() {
-    // A deep link opened directly has no history to go back to.
-    if (location.key === 'default') {
-      navigate('/', { replace: true })
-    } else {
-      navigate(-1)
-    }
-  }
+  const goBack = useGoBack()
 
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
         {showBack && (
           <div className={styles.back}>
-            <IconButton label={texts.common.back} onClick={goBack}>
+            <IconButton label={texts.common.back} onClick={() => goBack()}>
               <BackIcon />
             </IconButton>
           </div>
