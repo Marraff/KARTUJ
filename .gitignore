@@ -1,12 +1,17 @@
 # Claude Code – lokálne nastavenia
 .claude/settings.local.json
     
-# Node / Expo
+# Node / Vite
 node_modules/
-.expo/
 dist/
-web-build/
-expo-env.d.ts
+dist-ssr/
+dev-dist/
+*.local
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
 
 # Native builds
 /ios
@@ -27,9 +32,11 @@ expo-env.d.ts
 Thumbs.db
 
 # Logs
-npm-debug.*
-yarn-debug.*
-yarn-error.*
+logs
+*.log
 
 # TEXT Files
 *.txt
+
+# Lokálne inštrukcie pre AI (len na tomto PC)
+CLAUDE.md
