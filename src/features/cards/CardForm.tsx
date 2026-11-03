@@ -1,10 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { Button } from '../../components/Button'
+import { CameraIcon } from '../../components/icons'
 import { TextField } from '../../components/TextField'
 import { texts } from '../../texts/sk'
 import { BarcodeView } from '../barcode/BarcodeView'
 import { BARCODE_FORMATS, guessFormat, isValidCode } from '../barcode/barcodeFormats'
 import { DEFAULT_CARD_COLOR } from './cardColors'
+import { LazyScanner } from '../scanner/LazyScanner'
+import { useScannerOverlay } from '../scanner/useScannerOverlay'
 import { ColorPicker } from './ColorPicker'
 import type { BarcodeFormat, CardInput } from './types'
 import styles from './CardForm.module.css'
@@ -38,6 +41,7 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
   // Once the user picks a format by hand, stop guessing it from the typed number.
   const [isFormatChosen, setIsFormatChosen] = useState(initialValues !== undefined)
   const [showErrors, setShowErrors] = useState(false)
+  const scanner = useScannerOverlay()
 
   const code = values.code.trim()
   const errors = validate(values)
@@ -57,6 +61,13 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
   function handleFormatChange(format: BarcodeFormat) {
     setIsFormatChosen(true)
     update({ format })
+  }
+
+  function handleScanned(scannedCode: string, format: BarcodeFormat) {
+    // The scanner knows the exact format, so stop guessing from the number.
+    setIsFormatChosen(true)
+    update({ code: scannedCode, format })
+    scanner.close()
   }
 
   function handleSubmit(event: FormEvent) {
@@ -82,8 +93,12 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
         placeholder={texts.cardForm.namePlaceholder}
         error={visibleErrors.name}
         required
-        autoFocus={initialValues === undefined}
       />
+
+      <Button variant="secondary" onClick={scanner.open}>
+        <CameraIcon />
+        {texts.scan.button}
+      </Button>
 
       <TextField
         label={texts.cardForm.code}
@@ -154,6 +169,8 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
           </Button>
         )}
       </div>
+
+      {scanner.isOpen && <LazyScanner onDetected={handleScanned} onClose={scanner.close} />}
     </form>
   )
 }

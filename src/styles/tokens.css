@@ -10,6 +10,9 @@
   --color-danger: #dc2626;
   --color-barcode-bg: #ffffff;
   --color-barcode-fg: #000000;
+  /* Camera screen is always dark, in both themes. */
+  --color-camera-bg: #000000;
+  --color-camera-text: #ffffff;
 
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;

@@ -15,6 +15,9 @@ type BarcodeViewProps = {
 // Always black on white (also in dark mode) – scanners at the checkout need high contrast.
 const BAR_COLOR = '#000000'
 const BACKGROUND = '#ffffff'
+const MODULE_WIDTH = 3
+// Checkout scanners need a white "quiet zone" on both sides (EAN: ~11 modules).
+const QUIET_ZONE = 10 * MODULE_WIDTH
 
 export function BarcodeView({ code, format, hideNumber = false }: BarcodeViewProps) {
   const svgRef = useRef<SVGSVGElement>(null)
@@ -38,7 +41,9 @@ export function BarcodeView({ code, format, hideNumber = false }: BarcodeViewPro
       format: toJsBarcodeFormat(format),
       displayValue: false,
       margin: 0,
-      width: 3,
+      marginLeft: QUIET_ZONE,
+      marginRight: QUIET_ZONE,
+      width: MODULE_WIDTH,
       height: 120,
       lineColor: BAR_COLOR,
       background: BACKGROUND,

@@ -64,6 +64,18 @@ export const texts = {
   },
   scan: {
     title: 'Naskenovať kód',
+    button: 'Naskenovať kód kamerou',
+    hint: 'Namier kameru na čiarový alebo QR kód karty',
+    starting: 'Spúšťam kameru…',
+    manualEntry: 'Zadať ručne',
+    errors: {
+      permissionDenied: 'Appka nemá povolenie používať kameru.',
+      permissionHelpIos: 'iPhone: Nastavenia → Safari → Kamera → Povoliť (alebo ťukni na „aA“ v adresnom riadku → Nastavenia webovej stránky).',
+      permissionHelpAndroid: 'Android: ťukni na ikonu vľavo od adresy → Povolenia → Kamera → Povoliť.',
+      noCamera: 'V tomto zariadení sa nenašla žiadna kamera.',
+      insecure: 'Kamera funguje len cez zabezpečené pripojenie (https).',
+      generic: 'Kameru sa nepodarilo spustiť. Skús to znova alebo zadaj číslo ručne.',
+    },
   },
   settings: {
     title: 'Nastavenia',
