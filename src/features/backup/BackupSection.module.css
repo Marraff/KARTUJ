@@ -1,0 +1,31 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.text {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.success,
+.error {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  background: var(--color-surface);
+}
+
+.success {
+  border-left: 4px solid var(--color-success);
+}
+
+.error {
+  border-left: 4px solid var(--color-danger);
+  color: var(--color-danger);
+}

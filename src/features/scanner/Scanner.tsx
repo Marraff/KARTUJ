@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '../../components/Button'
 import { IconButton } from '../../components/IconButton'
 import { CloseIcon } from '../../components/icons'
+import { isIos } from '../../lib/platform'
 import { texts } from '../../texts/sk'
 import type { BarcodeFormat } from '../cards/types'
 import { createReader } from './createReader'
@@ -114,6 +115,5 @@ function getCameraErrorMessage(error: unknown): string {
 }
 
 function getPermissionHelp(): string {
-  const isIos = /iPhone|iPad|iPod/.test(navigator.userAgent)
-  return isIos ? texts.scan.errors.permissionHelpIos : texts.scan.errors.permissionHelpAndroid
+  return isIos() ? texts.scan.errors.permissionHelpIos : texts.scan.errors.permissionHelpAndroid
 }

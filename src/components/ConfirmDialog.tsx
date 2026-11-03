@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react'
 import { texts } from '../texts/sk'
 import { Button } from './Button'
-import styles from './ConfirmDialog.module.css'
+import { Dialog } from './Dialog'
 
 type ConfirmDialogProps = {
   open: boolean
@@ -12,31 +11,16 @@ type ConfirmDialogProps = {
   onCancel: () => void
 }
 
-/** Native <dialog>: focus trap, Esc to close and backdrop come from the browser. */
+/** Yes/no question for destructive actions (the confirm button is red). */
 export function ConfirmDialog({ open, title, text, confirmLabel, onConfirm, onCancel }: ConfirmDialogProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null)
-
-  useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog) return
-    if (open && !dialog.open) dialog.showModal()
-    if (!open && dialog.open) dialog.close()
-  }, [open])
-
   return (
-    <dialog ref={dialogRef} className={styles.dialog} onCancel={onCancel} aria-labelledby="confirm-title">
-      <h2 id="confirm-title" className={styles.title}>
-        {title}
-      </h2>
-      <p className={styles.text}>{text}</p>
-      <div className={styles.actions}>
-        <Button variant="secondary" onClick={onCancel}>
-          {texts.common.cancel}
-        </Button>
-        <Button variant="danger" onClick={onConfirm}>
-          {confirmLabel}
-        </Button>
-      </div>
-    </dialog>
+    <Dialog open={open} title={title} text={text} onCancel={onCancel}>
+      <Button variant="secondary" onClick={onCancel}>
+        {texts.common.cancel}
+      </Button>
+      <Button variant="danger" onClick={onConfirm}>
+        {confirmLabel}
+      </Button>
+    </Dialog>
   )
 }

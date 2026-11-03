@@ -79,6 +79,65 @@ export const texts = {
   },
   settings: {
     title: 'Nastavenia',
+    backupTitle: 'Záloha kariet',
+    backupText:
+      'Karty sú uložené len v tomto telefóne. Zálohuj si ich do súboru (napr. na iCloud alebo Google Drive) – pri výmene telefónu alebo zmazaní appky ich z neho obnovíš.',
+    backupButton: (count: number) => `Zálohovať karty (${count})`,
+    restoreButton: 'Obnoviť zo zálohy',
+    backupSaved: 'Záloha bola uložená.',
+    backupEmpty: 'Nemáš žiadne karty na zálohovanie.',
+    backupFailed: 'Zálohu sa nepodarilo vytvoriť. Skús to znova.',
+    restoreResult: (added: number, overwritten: number, skipped: number) =>
+      `Obnovené: ${added} nových` +
+      (overwritten > 0 ? `, ${overwritten} prepísaných` : '') +
+      (skipped > 0 ? `, ${skipped} preskočených` : '') +
+      '.',
+    restoreInvalid: (count: number) => ` Poškodené karty, ktoré sa nedali obnoviť: ${count}.`,
+    restoreNothing: 'V zálohe nie sú žiadne karty.',
+    restoreFailed: 'Zálohu sa nepodarilo obnoviť. Skús to znova.',
+    restoreErrors: {
+      notJson: 'Tento súbor nie je záloha KARTUJ.',
+      notKartujBackup: 'Tento súbor nie je záloha KARTUJ.',
+      newerVersion: 'Záloha je z novšej verzie appky. Najprv appku aktualizuj (zatvor ju a znova otvor).',
+    },
+    conflictTitle: 'Niektoré karty už máš',
+    conflictText: (count: number) => {
+      // Slovak plural: 1 karta je, 2–4 karty sú, 5+ kariet je
+      if (count === 1) return '1 karta zo zálohy už v telefóne je. Čo s ňou?'
+      if (count <= 4) return `${count} karty zo zálohy už v telefóne sú. Čo s nimi?`
+      return `${count} kariet zo zálohy už v telefóne je. Čo s nimi?`
+    },
+    conflictOverwrite: 'Prepísať verziou zo zálohy',
+    conflictSkip: 'Ponechať tie v telefóne',
+    installTitle: 'Inštalácia appky',
+    aboutTitle: 'O aplikácii',
+    version: 'Verzia',
+    storage: 'Úložisko',
+    storagePersistent: 'trvalé (telefón karty sám nezmaže)',
+    storageBestEffort: 'bežné (pri nedostatku miesta ich telefón môže zmazať – zálohuj si ich)',
+    privacy: 'Karty sa nikam neposielajú, zostávajú len v tomto zariadení.',
+  },
+  install: {
+    bannerTitle: 'Nainštaluj si KARTUJ',
+    bannerTextIos: 'Pridaj si appku na plochu – otvorí sa ako bežná aplikácia a funguje aj bez internetu.',
+    bannerTextAndroid: 'Nainštaluj si appku – otvorí sa ako bežná aplikácia a funguje aj bez internetu.',
+    installButton: 'Inštalovať',
+    showHow: 'Ako na to?',
+    dismiss: 'Teraz nie',
+    installed: 'Appka je nainštalovaná. ✓',
+    iosSteps: [
+      'Otvor túto stránku v Safari.',
+      'Ťukni na tlačidlo Zdieľať (štvorec so šípkou hore).',
+      'Vyber „Pridať na plochu“ a potvrď „Pridať“.',
+      'Otváraj KARTUJ už len z ikony na ploche.',
+    ],
+    iosWarning:
+      'Dôležité: Safari a appka na ploche majú oddelené úložiská. Karty pridané v Safari v appke na ploche neuvidíš – presunieš ich cez Zálohu a Obnovu.',
+    androidSteps: [
+      'Otvor túto stránku v Chrome.',
+      'Ťukni na menu ⋮ vpravo hore.',
+      'Vyber „Inštalovať aplikáciu“ (alebo „Pridať na plochu“).',
+    ],
   },
   notFound: {
     title: 'Stránka neexistuje',

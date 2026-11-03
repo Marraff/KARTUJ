@@ -1,10 +1,17 @@
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import react from '@vitejs/plugin-react'
+import { readFileSync } from 'node:fs'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as { version: string }
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
+  define: {
+    // Shown in Settings → O aplikácii. Bump "version" in package.json for each release.
+    __APP_VERSION__: JSON.stringify(packageJson.version),
+  },
   server: {
     // On Windows "localhost" binds only to IPv6 (::1), but `adb reverse` forwards to 127.0.0.1.
     // `npm run dev:phone` overrides this with --host (all interfaces).

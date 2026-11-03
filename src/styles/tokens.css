@@ -8,6 +8,8 @@
   --color-primary: #2563eb;
   --color-primary-text: #ffffff;
   --color-danger: #dc2626;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
   --color-barcode-bg: #ffffff;
   --color-barcode-fg: #000000;
   /* Camera screen is always dark, in both themes. */
