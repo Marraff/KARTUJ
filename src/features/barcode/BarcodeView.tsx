@@ -28,12 +28,20 @@ export function BarcodeView({ code, format, hideNumber = false }: BarcodeViewPro
   useEffect(() => {
     if (!canRender) return
     if (format === 'QR_CODE') {
-      if (!canvasRef.current) return
-      QRCode.toCanvas(canvasRef.current, code, {
+      const canvas = canvasRef.current
+      if (!canvas) return
+      QRCode.toCanvas(canvas, code, {
         width: 512,
         margin: 0,
         color: { dark: BAR_COLOR, light: BACKGROUND },
-      }).catch((error: unknown) => console.error('QR render failed', error))
+      })
+        .then(() => {
+          // qrcode sets inline width/height (512px), which overrides our CSS and,
+          // with max-width, stretches the code into a tall rectangle.
+          canvas.style.removeProperty('width')
+          canvas.style.removeProperty('height')
+        })
+        .catch((error: unknown) => console.error('QR render failed', error))
       return
     }
     if (!svgRef.current) return
