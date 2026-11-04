@@ -1,6 +1,6 @@
 import JsBarcode from 'jsbarcode'
 import QRCode from 'qrcode'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type CSSProperties } from 'react'
 import type { BarcodeFormat } from '../cards/types'
 import { formatCodeForDisplay, isValidCode, toJsBarcodeFormat } from './barcodeFormats'
 import styles from './BarcodeView.module.css'
@@ -52,6 +52,10 @@ export function BarcodeView({ code, format, hideNumber = false }: BarcodeViewPro
 
   if (!canRender) return null
 
+  const displayNumber = formatCodeForDisplay(code)
+  // CSS shrinks the font by this length so long numbers stay on one line.
+  const numberStyle = { '--number-length': displayNumber.length } as CSSProperties
+
   return (
     <div className={styles.box}>
       {isQr ? (
@@ -59,7 +63,11 @@ export function BarcodeView({ code, format, hideNumber = false }: BarcodeViewPro
       ) : (
         <svg ref={svgRef} className={styles.linear} preserveAspectRatio="none" />
       )}
-      {!hideNumber && <p className={styles.number}>{formatCodeForDisplay(code)}</p>}
+      {!hideNumber && (
+        <p className={styles.number} style={numberStyle}>
+          {displayNumber}
+        </p>
+      )}
     </div>
   )
 }
