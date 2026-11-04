@@ -12,6 +12,8 @@ type TextFieldProps = {
   /** Numeric keyboard on phones for card numbers. */
   inputMode?: 'text' | 'numeric'
   autoFocus?: boolean
+  /** false = no autocorrect / spell check (names, brands). */
+  autoCorrect?: boolean
   onFocus?: () => void
   onBlur?: () => void
 }
@@ -26,6 +28,7 @@ export function TextField({
   multiline = false,
   inputMode = 'text',
   autoFocus = false,
+  autoCorrect = true,
   onFocus,
   onBlur,
 }: TextFieldProps) {
@@ -37,6 +40,9 @@ export function TextField({
     placeholder,
     required,
     autoFocus,
+    // autoCorrect is Safari-only; spellCheck turns off underlines/corrections elsewhere.
+    autoCorrect: autoCorrect ? 'on' : 'off',
+    spellCheck: autoCorrect,
     onFocus,
     onBlur,
     className: `${styles.input} ${error ? styles.invalid : ''}`,

@@ -14,33 +14,45 @@ type StoreNameFieldProps = {
   onPickStore: (store: Store) => void
 }
 
+// iOS writes its autocorrect word back into the field only after the keyboard closes.
+const KEYBOARD_SETTLE_MS = 150
+
 /** "Store name" input with suggestions of known stores (logo + name) while typing. */
 export function StoreNameField({ value, storeId, error, onChange, onPickStore }: StoreNameFieldProps) {
   const [isFocused, setIsFocused] = useState(false)
+  // Changing the key replaces the <input> with a fresh one (see pick).
+  const [inputKey, setInputKey] = useState(0)
   const pickedStore = getStoreById(storeId)
   // No suggestions once a store was picked and its name was not changed since.
   const isPickedNameUnchanged = pickedStore !== undefined && pickedStore.name === value
   const suggestions = isFocused && !isPickedNameUnchanged ? searchStores(value) : []
 
   function pick(store: Store) {
-    // Phone keyboards keep the typed word "composing" (autocorrect). If we set the name
-    // while it is composing, the keyboard commits its word afterwards and overwrites
-    // the picked name. So end typing first (closes the keyboard), then set the name
-    // in the next task – after the keyboard's own input event.
+    // Phone keyboards keep the typed word "composing" (autocorrect). After a pick they
+    // write that word back into the field and overwrite the picked name ("Lid" instead
+    // of "Lidl Plus") – on iOS even some time after the keyboard closed. So: end typing
+    // (closes the keyboard), wait until the keyboard is done, then set the name in a
+    // brand-new <input>; whatever the keyboard writes later lands in the old, removed one.
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
     setIsFocused(false)
-    setTimeout(() => onPickStore(store), 0)
+    setTimeout(() => {
+      setInputKey((key) => key + 1)
+      onPickStore(store)
+    }, KEYBOARD_SETTLE_MS)
   }
 
   return (
     <div className={styles.wrapper}>
       <TextField
+        key={inputKey}
         label={texts.cardForm.name}
         value={value}
         onChange={onChange}
         placeholder={texts.cardForm.namePlaceholder}
         error={error}
         required
+        // Store names are brands (dm, OMV, CCC) – autocorrect only gets in the way.
+        autoCorrect={false}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />
