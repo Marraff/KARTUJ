@@ -40,8 +40,14 @@ class QuietMultiFormatReader extends BrowserMultiFormatReader {
   }
 }
 
-export function createReader(): BrowserMultiFormatReader {
+type ReaderOptions = {
+  /** Slower but finds more codes – for single images, too slow for live camera frames. */
+  tryHarder?: boolean
+}
+
+export function createReader({ tryHarder = false }: ReaderOptions = {}): BrowserMultiFormatReader {
   fixCode128Reader()
   const hints = new Map<DecodeHintType, unknown>([[DecodeHintType.POSSIBLE_FORMATS, SCANNABLE_ZXING_FORMATS]])
+  if (tryHarder) hints.set(DecodeHintType.TRY_HARDER, true)
   return new QuietMultiFormatReader(hints)
 }

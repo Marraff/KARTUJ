@@ -59,7 +59,11 @@ export const texts = {
     hint: 'Namier kameru na čiarový alebo QR kód karty',
     starting: 'Spúšťam kameru…',
     manualEntry: 'Zadať ručne',
+    fromImage: 'Načítať kód z obrázka',
+    readingImage: 'Hľadám kód na obrázku…',
     errors: {
+      imageNoCode: 'Na obrázku sa nenašiel žiadny kód. Skús screenshot alebo ostrú fotku, na ktorej je celý kód.',
+      imageUnreadable: 'Obrázok sa nepodarilo otvoriť. Skús iný.',
       permissionDenied: 'Appka nemá povolenie používať kameru.',
       permissionHelpIos: 'iPhone: Nastavenia → Safari → Kamera → Povoliť (alebo ťukni na „aA“ v adresnom riadku → Nastavenia webovej stránky).',
       permissionHelpAndroid: 'Android: ťukni na ikonu vľavo od adresy → Povolenia → Kamera → Povoliť.',

@@ -5,6 +5,7 @@ import { TextField } from '../../components/TextField'
 import { texts } from '../../texts/sk'
 import { BarcodeView } from '../barcode/BarcodeView'
 import { guessFormat, isValidCode } from '../barcode/barcodeFormats'
+import { ImageScanButton } from '../scanner/ImageScanButton'
 import { LazyScanner } from '../scanner/LazyScanner'
 import { useScannerOverlay } from '../scanner/useScannerOverlay'
 import { StoreNameField } from '../stores/StoreNameField'
@@ -64,6 +65,10 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
     scanner.close()
   }
 
+  function handleImageScanned(scannedCode: string, format: BarcodeFormat) {
+    update({ code: scannedCode, format })
+  }
+
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
     if (Object.keys(errors).length > 0) {
@@ -88,6 +93,8 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
         <CameraIcon />
         {texts.scan.button}
       </Button>
+
+      <ImageScanButton onDetected={handleImageScanned} />
 
       <TextField
         label={texts.cardForm.code}
