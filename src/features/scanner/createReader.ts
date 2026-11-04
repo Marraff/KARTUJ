@@ -8,6 +8,7 @@ import {
   type Reader,
   type Result,
 } from '@zxing/library'
+import { fixCode128Reader } from './fixCode128Reader'
 import { SCANNABLE_ZXING_FORMATS } from './scanFormats'
 
 /**
@@ -40,6 +41,7 @@ class QuietMultiFormatReader extends BrowserMultiFormatReader {
 }
 
 export function createReader(): BrowserMultiFormatReader {
+  fixCode128Reader()
   const hints = new Map<DecodeHintType, unknown>([[DecodeHintType.POSSIBLE_FORMATS, SCANNABLE_ZXING_FORMATS]])
   return new QuietMultiFormatReader(hints)
 }
