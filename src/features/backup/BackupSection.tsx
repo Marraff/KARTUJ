@@ -5,6 +5,7 @@ import { texts } from '../../texts/sk'
 import { findExistingIds, importCards, type ImportConflictMode } from '../cards/cardsRepo'
 import type { Card } from '../cards/types'
 import { BackupError, createBackupFileName, createBackupJson, parseBackup, saveBackupFile } from './backup'
+import { getLastBackupAt, markBackupDone } from './backupStatus'
 import styles from './BackupSection.module.css'
 
 type BackupSectionProps = {
@@ -26,13 +27,19 @@ export function BackupSection({ cards: currentCards }: BackupSectionProps) {
   const [message, setMessage] = useState<Message>()
   const [isBusy, setIsBusy] = useState(false)
   const [pendingImport, setPendingImport] = useState<PendingImport>()
+  const [lastBackupAt, setLastBackupAt] = useState(getLastBackupAt)
 
   async function handleBackup() {
     setMessage(undefined)
     setIsBusy(true)
     try {
       const saved = await saveBackupFile(createBackupJson(currentCards), createBackupFileName())
-      if (saved) setMessage({ kind: 'success', text: texts.settings.backupSaved })
+      if (saved) {
+        const now = Date.now()
+        markBackupDone(now)
+        setLastBackupAt(now)
+        setMessage({ kind: 'success', text: texts.settings.backupSaved })
+      }
     } catch (error) {
       console.error('Backup failed', error)
       setMessage({ kind: 'error', text: texts.settings.backupFailed })
@@ -98,6 +105,11 @@ export function BackupSection({ cards: currentCards }: BackupSectionProps) {
   return (
     <div className={styles.section}>
       <p className={styles.text}>{texts.settings.backupText}</p>
+      <p className={styles.text}>
+        {lastBackupAt === undefined
+          ? texts.settings.lastBackupNever
+          : texts.settings.lastBackup(new Date(lastBackupAt).toLocaleDateString('sk-SK'))}
+      </p>
 
       <Button onClick={handleBackup} disabled={isBusy || cardCount === 0}>
         {texts.settings.backupButton(cardCount)}

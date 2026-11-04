@@ -79,6 +79,8 @@ export const texts = {
       'Karty sú uložené len v tomto telefóne. Zálohuj si ich do súboru (napr. na iCloud alebo Google Drive) – pri výmene telefónu alebo zmazaní appky ich z neho obnovíš.',
     backupButton: (count: number) => `Zálohovať karty (${count})`,
     restoreButton: 'Obnoviť zo zálohy',
+    lastBackup: (date: string) => `Posledná záloha: ${date}`,
+    lastBackupNever: 'Zatiaľ žiadna záloha.',
     backupSaved: 'Záloha bola uložená.',
     backupEmpty: 'Nemáš žiadne karty na zálohovanie.',
     backupFailed: 'Zálohu sa nepodarilo vytvoriť. Skús to znova.',
@@ -111,6 +113,17 @@ export const texts = {
     storagePersistent: 'trvalé (telefón karty sám nezmaže)',
     storageBestEffort: 'bežné (pri nedostatku miesta ich telefón môže zmazať – zálohuj si ich)',
     privacy: 'Karty sa nikam neposielajú, zostávajú len v tomto zariadení.',
+  },
+  backupReminder: {
+    title: 'Zálohuj si karty',
+    neverText:
+      'Karty máš len v tomto telefóne. Ak sa telefón stratí, pokazí alebo appku zmažeš, prídeš o ne. Záloha trvá pár sekúnd.',
+    outdatedText: (days: number) => {
+      const when = days === 0 ? 'dnes' : days === 1 ? 'pred 1 dňom' : `pred ${days} dňami`
+      return `Posledná záloha bola ${when}. Odvtedy pribudli alebo sa zmenili karty, ktoré v nej nie sú.`
+    },
+    backupButton: 'Zálohovať',
+    dismiss: 'Teraz nie',
   },
   install: {
     bannerTitle: 'Nainštaluj si KARTUJ',

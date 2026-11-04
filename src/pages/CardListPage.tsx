@@ -8,6 +8,7 @@ import { Page } from '../components/Page'
 import { CardTile } from '../features/cards/CardTile'
 import type { Card } from '../features/cards/types'
 import { useCards } from '../features/cards/useCards'
+import { BackupReminder } from '../features/backup/BackupReminder'
 import { InstallBanner } from '../features/install/InstallBanner'
 import { normalizeForSearch } from '../lib/text'
 import { texts } from '../texts/sk'
@@ -59,6 +60,7 @@ export function CardListPage() {
   return (
     <Page title={texts.appName} headerActions={settingsButton}>
       <InstallBanner />
+      <BackupReminder cards={cards} />
       <label className={styles.search}>
         <SearchIcon size={20} />
         <input
