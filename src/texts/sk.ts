@@ -42,6 +42,9 @@ export const texts = {
     deleteCard: 'Zmazať kartu',
     deleteConfirmTitle: 'Zmazať kartu?',
     deleteConfirmText: 'Karta sa natrvalo odstráni z tohto telefónu.',
+    duplicateTitle: 'Táto karta už existuje',
+    duplicateText: (existingName: string) => `Karta s týmto číslom je už uložená ako „${existingName}“. Chceš ju uložiť aj tak?`,
+    saveAnyway: 'Uložiť aj tak',
     errors: {
       nameRequired: 'Zadaj názov obchodu.',
       codeRequired: 'Zadaj číslo karty.',

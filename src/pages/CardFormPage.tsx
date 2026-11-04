@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
+import { Button } from '../components/Button'
 import { ConfirmDialog } from '../components/ConfirmDialog'
+import { Dialog } from '../components/Dialog'
 import { Page } from '../components/Page'
 import { CardForm } from '../features/cards/CardForm'
-import { createCard, deleteCard, updateCard } from '../features/cards/cardsRepo'
+import { createCard, deleteCard, findCardByCode, updateCard } from '../features/cards/cardsRepo'
 import type { Card, CardInput } from '../features/cards/types'
 import { useCard } from '../features/cards/useCards'
 import { useGoBack } from '../lib/useGoBack'
@@ -49,10 +51,35 @@ function CardFormContent({ existingCard }: CardFormContentProps) {
   const [isSaving, setIsSaving] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string>()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  // Set when another card already has the same number – saving waits for the user's answer.
+  const [duplicate, setDuplicate] = useState<{ input: CardInput; existingName: string }>()
 
   async function handleSubmit(input: CardInput) {
-    setIsSaving(true)
     setErrorMessage(undefined)
+    // Disables "Save" during the check, so a double tap cannot create two cards.
+    setIsSaving(true)
+    try {
+      const existing = await findCardByCode(input.code, existingCard?.id)
+      if (existing) {
+        setIsSaving(false)
+        setDuplicate({ input, existingName: existing.name })
+        return
+      }
+    } catch (error) {
+      // The check is only a hint – if it fails, saving must still work.
+      console.error('Duplicate check failed', error)
+    }
+    await saveCard(input)
+  }
+
+  function handleSaveDuplicate() {
+    if (!duplicate) return
+    setDuplicate(undefined)
+    void saveCard(duplicate.input)
+  }
+
+  async function saveCard(input: CardInput) {
+    setIsSaving(true)
     try {
       if (existingCard) {
         await updateCard(existingCard.id, input)
@@ -100,6 +127,17 @@ function CardFormContent({ existingCard }: CardFormContentProps) {
         onConfirm={handleDelete}
         onCancel={() => setIsDeleteDialogOpen(false)}
       />
+      <Dialog
+        open={duplicate !== undefined}
+        title={texts.cardForm.duplicateTitle}
+        text={duplicate ? texts.cardForm.duplicateText(duplicate.existingName) : ''}
+        onCancel={() => setDuplicate(undefined)}
+      >
+        <Button variant="secondary" onClick={() => setDuplicate(undefined)}>
+          {texts.common.cancel}
+        </Button>
+        <Button onClick={handleSaveDuplicate}>{texts.cardForm.saveAnyway}</Button>
+      </Dialog>
     </>
   )
 }

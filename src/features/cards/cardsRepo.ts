@@ -12,6 +12,14 @@ export async function getCard(id: string): Promise<Card | undefined> {
   return db.cards.get(id)
 }
 
+/**
+ * Another card with the same code (to warn about duplicates), ignoring `excludeId`
+ * (the card being edited). `code` is not indexed – there are only a few cards.
+ */
+export async function findCardByCode(code: string, excludeId?: string): Promise<Card | undefined> {
+  return db.cards.filter((card) => card.code === code && card.id !== excludeId).first()
+}
+
 export async function createCard(input: CardInput): Promise<Card> {
   const now = Date.now()
   const card: Card = {
