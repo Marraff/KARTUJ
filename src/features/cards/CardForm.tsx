@@ -52,8 +52,11 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
     setValues((current) => ({ ...current, ...changes }))
   }
 
-  function handleCodeChange(newCode: string) {
-    update({ code: newCode, format: guessFormat(newCode.trim()) })
+  // Typed numbers are digits only (also strips spaces/dashes from pasted numbers).
+  // Scanned codes bypass this, so cards with letters can still be added by scanning.
+  function handleCodeChange(typedCode: string) {
+    const digits = typedCode.replace(/\D/g, '')
+    update({ code: digits, format: guessFormat(digits) })
   }
 
   function handleScanned(scannedCode: string, format: BarcodeFormat) {
@@ -91,6 +94,7 @@ export function CardForm({ initialValues, isSaving, errorMessage, onSubmit, onDe
         value={values.code}
         onChange={handleCodeChange}
         placeholder={texts.cardForm.codePlaceholder}
+        inputMode="numeric"
         error={visibleErrors.code}
         required
       />

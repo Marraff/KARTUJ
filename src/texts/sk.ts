@@ -45,7 +45,7 @@ export const texts = {
     errors: {
       nameRequired: 'Zadaj názov obchodu.',
       codeRequired: 'Zadaj číslo karty.',
-      codeInvalid: 'Číslo karty obsahuje nepodporované znaky (napr. diakritiku). Použi len čísla, písmená bez diakritiky a bežné znaky.',
+      codeInvalid: 'Tento kód sa nedá zobraziť. Skús kartu naskenovať kamerou.',
       saveFailed: 'Kartu sa nepodarilo uložiť. Skús to znova.',
       deleteFailed: 'Kartu sa nepodarilo zmazať. Skús to znova.',
     },
