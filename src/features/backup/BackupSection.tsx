@@ -5,7 +5,7 @@ import { texts } from '../../texts/sk'
 import { findExistingIds, importCards, type ImportConflictMode } from '../cards/cardsRepo'
 import type { Card } from '../cards/types'
 import { BackupError, createBackupFileName, createBackupJson, parseBackup, saveBackupFile } from './backup'
-import { getLastBackupAt, markBackupDone } from './backupStatus'
+import { getBackupStatus, getLastBackupAt, markBackupDone, type BackupStatus } from './backupStatus'
 import styles from './BackupSection.module.css'
 
 type BackupSectionProps = {
@@ -28,6 +28,7 @@ export function BackupSection({ cards: currentCards }: BackupSectionProps) {
   const [isBusy, setIsBusy] = useState(false)
   const [pendingImport, setPendingImport] = useState<PendingImport>()
   const [lastBackupAt, setLastBackupAt] = useState(getLastBackupAt)
+  const backupStatus = getBackupStatus(currentCards, lastBackupAt)
 
   async function handleBackup() {
     setMessage(undefined)
@@ -105,11 +106,7 @@ export function BackupSection({ cards: currentCards }: BackupSectionProps) {
   return (
     <div className={styles.section}>
       <p className={styles.text}>{texts.settings.backupText}</p>
-      <p className={styles.text}>
-        {lastBackupAt === undefined
-          ? texts.settings.lastBackupNever
-          : texts.settings.lastBackup(new Date(lastBackupAt).toLocaleDateString('sk-SK'))}
-      </p>
+      {cardCount > 0 && <BackupStatusText status={backupStatus} />}
 
       <Button onClick={handleBackup} disabled={isBusy || cardCount === 0}>
         {texts.settings.backupButton(cardCount)}
@@ -150,5 +147,19 @@ export function BackupSection({ cards: currentCards }: BackupSectionProps) {
         </Button>
       </Dialog>
     </div>
+  )
+}
+
+function BackupStatusText({ status }: { status: BackupStatus }) {
+  if (status.kind === 'never') return <p className={styles.text}>{texts.settings.lastBackupNever}</p>
+
+  const date = new Date(status.lastBackupAt).toLocaleDateString('sk-SK')
+  if (status.kind === 'upToDate') {
+    return <p className={`${styles.status} ${styles.statusOk}`}>{texts.settings.backupUpToDate(date)}</p>
+  }
+  return (
+    <p className={`${styles.status} ${styles.statusOutdated}`}>
+      {texts.settings.backupOutdated(date, status.newCount, status.changedCount)}
+    </p>
   )
 }

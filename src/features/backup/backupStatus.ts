@@ -38,6 +38,23 @@ export function shouldRemindBackup(cards: Card[], now = Date.now()): boolean {
   return now - oldestChange >= REMIND_AFTER_MS
 }
 
+export type BackupStatus =
+  | { kind: 'never' }
+  | { kind: 'upToDate'; lastBackupAt: number }
+  | { kind: 'outdated'; lastBackupAt: number; newCount: number; changedCount: number }
+
+/**
+ * What the last backup is missing. Deleted cards cannot be detected (they are gone),
+ * but a backup with an extra card is harmless.
+ */
+export function getBackupStatus(cards: Card[], lastBackupAt = getLastBackupAt()): BackupStatus {
+  if (lastBackupAt === undefined) return { kind: 'never' }
+  const newCount = cards.filter((card) => card.createdAt > lastBackupAt).length
+  const changedCount = cards.filter((card) => card.createdAt <= lastBackupAt && card.updatedAt > lastBackupAt).length
+  if (newCount === 0 && changedCount === 0) return { kind: 'upToDate', lastBackupAt }
+  return { kind: 'outdated', lastBackupAt, newCount, changedCount }
+}
+
 /** Whole days since the timestamp (0 = today). */
 export function daysSince(time: number, now = Date.now()): number {
   return Math.max(0, Math.floor((now - time) / DAY_MS))

@@ -79,8 +79,12 @@ export const texts = {
       'Karty sú uložené len v tomto telefóne. Zálohuj si ich do súboru (napr. na iCloud alebo Google Drive) – pri výmene telefónu alebo zmazaní appky ich z neho obnovíš.',
     backupButton: (count: number) => `Zálohovať karty (${count})`,
     restoreButton: 'Obnoviť zo zálohy',
-    lastBackup: (date: string) => `Posledná záloha: ${date}`,
     lastBackupNever: 'Zatiaľ žiadna záloha.',
+    backupUpToDate: (date: string) => `✓ Všetky karty sú zálohované (posledná záloha ${date}).`,
+    backupOutdated: (date: string, newCount: number, changedCount: number) => {
+      const changes = [newCardsText(newCount), changedCardsText(changedCount)].filter(Boolean).join(' a ')
+      return `Posledná záloha ${date}. Odvtedy ${changes} – zálohuj znova.`
+    },
     backupSaved: 'Záloha bola uložená.',
     backupEmpty: 'Nemáš žiadne karty na zálohovanie.',
     backupFailed: 'Zálohu sa nepodarilo vytvoriť. Skús to znova.',
@@ -152,3 +156,18 @@ export const texts = {
     backHome: 'Späť na karty',
   },
 } as const
+
+// Slovak plurals: 1 karta, 2–4 karty, 5+ kariet.
+function newCardsText(count: number): string {
+  if (count === 0) return ''
+  if (count === 1) return 'pribudla 1 nová karta'
+  if (count <= 4) return `pribudli ${count} nové karty`
+  return `pribudlo ${count} nových kariet`
+}
+
+function changedCardsText(count: number): string {
+  if (count === 0) return ''
+  if (count === 1) return '1 karta bola upravená'
+  if (count <= 4) return `${count} karty boli upravené`
+  return `${count} kariet bolo upravených`
+}
