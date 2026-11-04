@@ -23,8 +23,13 @@ export function StoreNameField({ value, storeId, error, onChange, onPickStore }:
   const suggestions = isFocused && !isPickedNameUnchanged ? searchStores(value) : []
 
   function pick(store: Store) {
-    onPickStore(store)
+    // Phone keyboards keep the typed word "composing" (autocorrect). If we set the name
+    // while it is composing, the keyboard commits its word afterwards and overwrites
+    // the picked name. So end typing first (closes the keyboard), then set the name
+    // in the next task – after the keyboard's own input event.
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
     setIsFocused(false)
+    setTimeout(() => onPickStore(store), 0)
   }
 
   return (
